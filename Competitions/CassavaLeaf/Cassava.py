@@ -14,6 +14,16 @@ import pandas as pd
 # print(img.size)
 # print(img[0][799])
 
+# scale_percent = 25
+# width = int(img.shape[1] * (scale_percent / 100))
+# height = int(img.shape[0] * (scale_percent / 100))
+# dim = (width, height)
+
+# resized = cv2.resize(img, dim, interpolation=cv2.INTER_AREA)
+# print(resized.shape)
+# plt.imshow(resized)
+# plt.show()
+
 ###############################################################################
 # Getting the data and modify it into the correct format
 
@@ -27,7 +37,13 @@ train_info = read_train_info()
 # Return a cv2 image from the file path
 def get_image(file_name):
     image_path = os.path.join("dataset", "train_images", file_name)
-    return cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+    image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+    scale_percent = 25
+    width = int(image.shape[1] * (scale_percent / 100))
+    height = int(image.shape[0] * (scale_percent / 100))
+    dim = (width, height)
+    resized_image = cv2.resize(image, dim, interpolation=cv2.INTER_AREA)
+    return resized_image
 
 # Convert cv2 image into list of pixels intensity
 def convert_img_to_pixel(image):
@@ -42,8 +58,8 @@ def convert_img_to_pixel(image):
 # Loop through all the available training data
 # and modify it into the correct array format
 def create_training_data():
-    X_train = [[i for i in range(480000)]]
-    y_train = [[480000]]
+    X_train = [[i for i in range(30000)]]
+    y_train = [[30000]]
     for ind in range(500):
         file_name = train_info["image_id"].loc[ind]
         image = get_image(file_name)
@@ -55,7 +71,7 @@ def create_training_data():
     return X_train, y_train
 
 X_train, y_train = create_training_data()
-print("DONE")
+
 # train = np.c_[X_train, y_train]
 
 # Create columns name
